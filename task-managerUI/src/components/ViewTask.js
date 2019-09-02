@@ -1,12 +1,76 @@
 import React from 'react';
-import { Col, Row, Button, Form, FormGroup, Label, Input, FormText,Container } from 'reactstrap';
+import { Col, Row, Button, Form, FormGroup, Label, Input, FormText,Container ,Modal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap';
+import TaskGrid from './TaskGrid';
+import EditTaskModal from './EditTaskModal';
 
 export default class ViewTask extends React.Component {
+
+  constructor(){
+    super();
+    this.state={
+      taskList:[]//,
+     // modal:false
+  }
+  this.getTasks=this.getTasks.bind(this);
+  this.updateGrid=this.updateGrid.bind(this);
+}
+updateGrid(data){
+  
+  this.setState({
+    taskList:data
+  })
+
+}
+getTasks(){
+  //this.toggleModal();
+
+  var url = 'http://localhost:8081/taskManager/tasks';
+  fetch(url)
+  .then(res => {//console.log(res.json())
+  //  console.log(res);
+     // console.log(res.status);
+    //  console.log(res.value);
+      return res.json();
+  })
+  .then(data => {console.log('Success:', data)
+
+    this.setState({
+      taskList:data.tasks
+    });
+  }).catch(error => console.error('Error:', error));
+
+}
+  componentDidMount(){
+
+  /*var url = 'http://localhost:8081/taskManager/tasks';
+  fetch(url)
+  .then(res => {//console.log(res.json())
+  //  console.log(res);
+     // console.log(res.status);
+    //  console.log(res.value);
+      return res.json();
+  })
+  .then(data => {console.log('Success:', data)
+
+    this.setState({
+      taskList:data.tasks
+    });
+  }).catch(error => console.error('Error:', error));
+
+ */
+  }
+
   render() {
     const containerStyle={
           'paddingTop':'20px'
       }
+    const gridContainerStyle={
+          'paddingTop':'60px',
+          'width':'auto',
+          'height':'300px'
+    }
     return (
+      <div>
       <Container style={containerStyle}>
       <Form>
         <Row form>
@@ -65,7 +129,20 @@ export default class ViewTask extends React.Component {
         
        
       </Form>
+      <Button  color="secondary" onClick={()=>this.getTasks()}>Search</Button>
+    
       </Container>
+      <Container hidden={this.state.taskList.length >0 ? false:true} className="gridContainer">
+      < TaskGrid data={this.state.taskList} updateGrid={this.updateGrid}/>
+      </Container>
+     
+{/*this.state.modal && 
+  <EditTaskModal/>
+*/} 
+      
+     
+       
+       </div>
     );
   }
 }
