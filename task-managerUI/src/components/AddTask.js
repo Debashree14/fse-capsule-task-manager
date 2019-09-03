@@ -5,6 +5,7 @@ import Slider from 'rc-slider';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {moment} from 'moment';
+import { compose } from 'redux';
 
 
 export default class AddTask extends React.Component {
@@ -53,6 +54,7 @@ export default class AddTask extends React.Component {
   
     var moment = require("moment");
     const addTask=this.state.addForm;
+  
     console.log("***************",addTask);
    
   
@@ -91,8 +93,28 @@ export default class AddTask extends React.Component {
       return;
     }
  
+    const task=addTask;
+  /*********************** */
 
+  var url = 'http://localhost:8081/taskManager/addTask';
+//var task = {username: 'example'};
+
+console.log(JSON.stringify(task));
+fetch(url, {
+  method: 'POST', // or 'PUT'
+  body: JSON.stringify(task), // data can be `string` or {object}!
+  
+  //mode: 'no-cors',
+  headers:{
+    'content-type': 'application/json',
+    'Access-Control-Allow-Origin':'*'
   }
+}).then(res => {  return res.json();})
+.then(response => {console.log('Success:', response)
+toast.success("Task added successfully")})
+.catch(error => console.error('Error:', error));
+  }
+
   reset(){
   
     let addForm=this.state.addForm;
@@ -114,7 +136,8 @@ export default class AddTask extends React.Component {
 const Range = Slider.Range;
 const createSliderWithTooltip = Slider.createSliderWithTooltip;
       const containerStyle={
-          'paddingTop':'20px'
+          'paddingTop':'20px',
+          'width':'90%'
       }
     return (
 
@@ -134,7 +157,7 @@ const createSliderWithTooltip = Slider.createSliderWithTooltip;
              value={15} step={1} max={30} min={0} orientation="horizontal" reversed={true} disabled="disabled" />
             </Col>*/}
             {<Col sm={5}>
-             <Range allowCross={false} min={0} max={150} name="priority" value={formData.slider} onChange={e => this.onChange("priority",e)} />
+             <Range allowCross={false} min={0} max={30} name="priority" value={formData.slider} onChange={e => this.onChange("priority",e)} />
             </Col>}
         </FormGroup>
         <FormGroup row>
