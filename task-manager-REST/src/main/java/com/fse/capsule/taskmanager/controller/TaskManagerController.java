@@ -7,8 +7,11 @@ import com.fse.capsule.taskmanager.service.ParentService;
 import com.fse.capsule.taskmanager.service.TaskManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,6 +33,7 @@ public class TaskManagerController {
     }
 
     @RequestMapping("/tasks")
+    @CrossOrigin(origins = "http://localhost:8080")
     public ResponseEntity<Object> getAllTasks(){
 
     List<Task> tasks =new ArrayList<Task>();
@@ -41,7 +45,9 @@ public class TaskManagerController {
     return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @RequestMapping(method = RequestMethod.POST,value="/addTask")
+    @RequestMapping(method = RequestMethod.POST,value="/addTask",produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
+    @CrossOrigin(origins = "http://localhost:8080")
+    //@PostMapping(path = "/addTask",produces = MediaType.APPLICATION_JSON,consumes = "MediaType.APPLICATION_JSON")
     public ResponseEntity<Object>  addTask(@RequestBody Task task){
         Map<Object,Object> response=new HashMap<Object,Object>();
         if(task == null){
@@ -61,6 +67,7 @@ public class TaskManagerController {
     }
 
     @RequestMapping(method = RequestMethod.POST,value="/updateTask")
+    @CrossOrigin(origins = "http://localhost:8080")
     public ResponseEntity<Object> updateTask(@RequestBody Task task){
         Map<Object,Object> response=new HashMap<Object,Object>();
         if(task == null){
@@ -80,6 +87,7 @@ public class TaskManagerController {
     }
 
     @RequestMapping(method = RequestMethod.GET,value="/taskById/{taskId}")
+    @CrossOrigin(origins = "http://localhost:8080")
     public ResponseEntity<Object> getTaskById(@PathVariable("taskId") Integer taskId ){
         Map<Object,Object> response=new HashMap<Object,Object>();
         if(taskId == null){
@@ -95,6 +103,7 @@ public class TaskManagerController {
     }
 
     @RequestMapping(method = RequestMethod.POST,value="/deleteTask")
+    @CrossOrigin(origins = "http://localhost:8080")
     public ResponseEntity<Object> deleteTask(@RequestBody Task task){
         Map<Object,Object> response=new HashMap<Object,Object>();
         if(task == null){
@@ -114,11 +123,13 @@ public class TaskManagerController {
     }
 
     @RequestMapping(method = RequestMethod.POST,value="/parentTask")
+    @CrossOrigin(origins = "http://localhost:8080")
     public void addParentTask(@RequestBody ParentTask parentTask){
         parentService.addParentTask(parentTask);
     }
 
     @RequestMapping("/parentTask")
+    @CrossOrigin(origins = "http://localhost:8080")
     public List<ParentTask> getAllParentTasks(){
 
         List<ParentTask> tasks =new ArrayList<ParentTask>();

@@ -1,5 +1,7 @@
 package com.fse.capsule.taskmanager.entity;
 
+import org.hibernate.annotations.Type;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -16,9 +18,11 @@ public class Task {
     @Column(name="Parent_ID")
     private int parentTaskId;
     @Column(name="Start_Date")
+    @Type(type="date")
     private Date startDate;
     @Column(name="End_Date")
-    private Date entDate;
+    @Type(type="date")
+    private Date endDate;
     @Column(name="Priority")
     private int priority;
 
@@ -54,12 +58,12 @@ public class Task {
         this.startDate = startDate;
     }
 
-    public Date getEntDate() {
-        return entDate;
+    public Date getEndDate() {
+        return endDate;
     }
 
-    public void setEntDate(Date entDate) {
-        this.entDate = entDate;
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
     }
 
     public int getPriority() {
@@ -77,7 +81,7 @@ public class Task {
                 ", taskName='" + taskName + '\'' +
                 ", parentTaskId=" + parentTaskId +
                 ", startDate=" + startDate +
-                ", entDate=" + entDate +
+                ", endDate=" + endDate +
                 ", priority=" + priority +
                 '}';
     }
